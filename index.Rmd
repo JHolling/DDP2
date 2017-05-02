@@ -1,0 +1,39 @@
+---
+title: "Plotly project"
+author: "Jesse Holling"
+date: "May 1, 2017"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Mileage vs Horsepower
+
+```{r load data,include=FALSE}
+suppressWarnings(library(plotly))
+```
+
+```{r, echo=FALSE}
+
+set.seed(123) #need for scattr only
+#plot_ly(mtcars,x=~mpg,y=~hp,color=~disp, type="scatter", mode="markers",size=~wt)  #scatter+color+crosshairs
+
+
+plot_ly(mtcars,x=~mpg,y=~hp,color=~disp, size=~wt) %>%
+    add_markers() %>%
+    add_fun(function(poop){
+        poop %>% slice(which.max(mpg)) %>%
+        add_annotations("High mileage") }) %>%
+    add_fun(function(poop2){
+        poop2 %>% slice(which.max(hp)) %>%
+        add_annotations("High Horsepower") }) %>%
+    add_fun(function(poop3){
+        poop3 %>% slice(which.max(wt)) %>%
+    add_annotations("Heavy Weight") })    
+
+
+```
